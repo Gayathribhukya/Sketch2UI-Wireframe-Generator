@@ -1,6 +1,16 @@
-venv/
-__pycache__/
+# Python virtual environment
+backend/venv/
+
+# Python cache
+backend/__pycache__/
 *.pyc
-uploads/
-processed/
+
+# Upload & processed folders
+backend/uploads/
+backend/processed/
+
+# Environment files
 .env
+
+# VS Code settings (optional)
+.vscode/
