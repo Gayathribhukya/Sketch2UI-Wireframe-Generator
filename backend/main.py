@@ -37,9 +37,10 @@ async def upload_image(file: UploadFile = File(...)):
     components = detect_ui_components(input_path, output_path)
     html_code = generate_html(components)
 
+    BACKEND_URL = "https://sketch2ui-wireframe-generator.onrender.com"
+
     return {
-        "message": "Processing complete",
-        "processed_image": f"http://localhost:8000/processed/processed_{file.filename}",
-        "components": components,
-        "code": html_code
-    }
+    "message": "Processing complete",
+    "processed_image": f"{BACKEND_URL}/processed/{filename}",
+    "code": generated_code
+}
