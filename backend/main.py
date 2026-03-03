@@ -4,9 +4,8 @@ from fastapi.staticfiles import StaticFiles
 import shutil
 import os
 
-from detect import detect_ui_components
-from generator import generate_html
-
+from backend.detect import detect_ui_components
+from backend.generator import generate_html
 app = FastAPI()
 
 app.add_middleware(
