@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sketch2UI</title>
+</head>
+
+<body style="font-family:Arial; padding:40px; background:#f4f6f8;">
+<div style="max-width:900px; margin:auto;">
+
+<h1 style="text-align:center; margin-bottom:30px;">
+    Sketch2UI  Wireframe to Frontend Generator
+</h1>
+
+<div style="background:white; padding:20px; border-radius:10px; 
+            box-shadow:0 4px 15px rgba(0,0,0,0.1); margin-bottom:30px;">
+    <h2>Upload Sketch</h2>
+    <input type="file" id="imageInput">
+    <button onclick="uploadImage()">Upload</button>
+</div>
+
+<p id="status"></p>
+<img id="preview" style="max-width:400px;"><br><br>
+
+<h3>Generated Code</h3>
+<textarea id="codeBox" rows="15" style="width:100%"></textarea>
+<br>
+<button onclick="downloadCode()">Download HTML</button>
+
+<h3>Live Preview</h3>
+<iframe id="previewFrame" 
+        style="width:100%; height:400px; border:1px solid #ccc;">
+</iframe>
+
+<hr style="margin-top:40px;">
+<p style="text-align:center; font-size:14px; color:gray;">
+Built using FastAPI + OpenCV + Spatial Layout Reconstruction
+</p>
+
+</div>
+
+<script>
+async function uploadImage() {
+    const fileInput = document.getElementById("imageInput");
+    const formData = new FormData();
+    formData.append("file", fileInput.files[0]);
+
+    const response = await fetch("http://localhost:8000/upload", {
+        method: "POST",
+        body: formData
+    });
+
+    const data = await response.json();
+
+    document.getElementById("status").innerText = data.message;
+    document.getElementById("preview").src = data.processed_image;
+    document.getElementById("codeBox").value = data.code;
+    document.getElementById("previewFrame").srcdoc = data.code;
+}
+
+function downloadCode() {
+    const code = document.getElementById("codeBox").value;
+    const blob = new Blob([code], { type: "text/html" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "generated.html";
+    link.click();
+}
+</script>
+
+</body>
+</html>
