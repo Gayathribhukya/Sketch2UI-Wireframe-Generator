@@ -50,23 +50,18 @@ def root():
 async def upload_image(file: UploadFile = File(...)):
     try:
 
-        # Save uploaded file
         upload_path = f"uploads/{file.filename}"
 
         with open(upload_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
 
-        # Detect UI components
-        components = detect_ui_components(upload_path)
-
-        # Generate HTML code
-        generated_code = generate_html(components)
-
-        # Processed image name
         processed_filename = f"processed_{file.filename}"
         processed_path = f"processed/{processed_filename}"
 
-        # If detect.py already saved image we just reference it
+        components = detect_ui_components(upload_path, processed_path)
+
+        generated_code = generate_html(components)
+
         processed_image_url = f"{BACKEND_URL}/processed/{processed_filename}"
 
         return {
@@ -76,7 +71,4 @@ async def upload_image(file: UploadFile = File(...)):
         }
 
     except Exception as e:
-        return {
-            "message": "Processing failed",
-            "error": str(e)
-        }
+        return {"error": str(e)}
